@@ -1,0 +1,539 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14231f">
+<title>Mon covoiturage</title>
+<style>
+:root {
+  --ink:#18231f;
+  --muted:#66736d;
+  --line:#e0e7e2;
+  --paper:#f5f7f5;
+  --green:#246b50;
+  --green2:#e5f2ea;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+header {
+  background:#14231f;
+  color:white;
+  padding:26px 18px;
+  border-radius:0 0 24px 24px;
+}
+.wrap { max-width:900px; margin:auto; padding:0 16px; }
+h1 { margin:8px 0; font-size:1.8rem; }
+h2 { font-size:1.1rem; margin:0; }
+header p { color:#d0ded6; margin:0; }
+main { padding:20px 0 40px; }
+.cards {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.card,.panel {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
+}
+.metric-label { color:var(--muted); font-size:.85rem; }
+.metric { font-size:1.5rem; font-weight:800; margin-top:5px; }
+.panel { margin-top:14px; }
+.panel-head { margin-bottom:14px; }
+.sub,.note { color:var(--muted); font-size:.85rem; }
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.field { display:flex; flex-direction:column; gap:6px; }
+label { font-size:.85rem; color:var(--muted); font-weight:650; }
+input,select {
+  width:100%;
+  padding:11px;
+  border:1px solid #d4ddd7;
+  border-radius:11px;
+  font:inherit;
+  min-height:44px;
+}
+button {
+  border:0;
+  border-radius:12px;
+  padding:11px 14px;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+.primary { background:var(--green); color:white; }
+.secondary { background:var(--green2); color:var(--green); }
+.plain { background:#f0f3f1; color:var(--ink); }
+.danger { background:#fae9e7; color:#a83e37; }
+.actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.list { display:flex; flex-direction:column; gap:8px; }
+.row-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:13px;
+}
+.row-main { flex:1; min-width:0; }
+.row-title { font-weight:700; }
+.row-meta { color:var(--muted); font-size:.82rem; margin-top:3px; }
+.pill {
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:20px;
+  font-size:.75rem;
+  font-weight:700;
+}
+.paid { background:var(--green2); color:var(--green); }
+.due { background:#fff0d5; color:#8b6418; }
+.empty { text-align:center; padding:18px; color:var(--muted); }
+.amount { font-weight:800; white-space:nowrap; }
+footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
+@media(max-width:620px) {
+  .cards { grid-template-columns:1fr 1fr; }
+  .cards .card:last-child { grid-column:1/-1; }
+  .form-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="sub">SUIVI PERSONNEL</div>
+    <h1>Mon covoiturage</h1>
+    <p>Suivi des trajets et des règlements mensuels.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="cards">
+  <div class="card">
+    <div class="metric-label">Reste à payer</div>
+    <div class="metric" id="globalBalance">0,00 CHF</div>
+  </div>
+  <div class="card">
+    <div class="metric-label">Total dû</div>
+    <div class="metric" id="globalDue">0,00 CHF</div>
+  </div>
+  <div class="card">
+    <div class="metric-label">Total réglé</div>
+    <div class="metric" id="globalPaid">0,00 CHF</div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Ajouter un covoiturage</h2>
+    <div class="sub">Une journée correspond à un aller-retour.</div>
+  </div>
+  <div class="form-grid">
+    <div class="field">
+      <label for="tripDate">Date</label>
+      <input id="tripDate" type="date">
+    </div>
+    <div class="field">
+      <label for="tripNote">Note facultative</label>
+      <input id="tripNote" type="text" placeholder="Commentaire">
+    </div>
+  </div>
+  <div class="actions">
+    <button class="primary" id="addTrip">+ Ajouter une journée</button>
+    <button class="plain" id="todayBtn">Aujourd'hui</button>
+  </div>
+  <p class="note" id="tripEstimate"></p>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Enregistrer un règlement</h2>
+    <div class="sub">Paiement complet ou partiel.</div>
+  </div>
+  <div class="form-grid">
+    <div class="field">
+      <label for="paymentMonth">Mois concerné</label>
+      <input id="paymentMonth" type="month">
+    </div>
+    <div class="field">
+      <label for="paymentDate">Date du paiement</label>
+      <input id="paymentDate" type="date">
+    </div>
+    <div class="field">
+      <label for="paymentAmount">Montant payé (CHF)</label>
+      <input id="paymentAmount" type="number" min="0.01" step="0.01">
+    </div>
+    <div class="field">
+      <label for="paymentNote">Note facultative</label>
+      <input id="paymentNote" type="text" placeholder="Virement, espèces...">
+    </div>
+  </div>
+  <div class="actions">
+    <button class="primary" id="addPayment">Enregistrer le règlement</button>
+    <button class="secondary" id="fillBalance">Préremplir le solde</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Récapitulatif mensuel</h2>
+    <div class="sub">Suivi des montants dus et réglés.</div>
+  </div>
+  <div id="months" class="list">
+    <div class="empty">Aucun trajet enregistré.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Historique des trajets</h2>
+  </div>
+  <div id="trips" class="list">
+    <div class="empty">Aucun trajet enregistré.</div>
+  </div>
+</section>
+
+<section class="panel">
+  <details>
+    <summary>Paramètres et sauvegarde</summary>
+    <div class="field" style="margin-top:15px">
+      <label for="monthlyBase">Participation mensuelle (CHF)</label>
+      <input id="monthlyBase" type="number" min="0" step="0.01" value="40">
+    </div>
+    <div class="actions">
+      <button class="secondary" id="exportBtn">Exporter JSON</button>
+      <button class="plain" id="importBtn">Importer JSON</button>
+      <input id="importFile" type="file" accept=".json" hidden>
+    </div>
+    <button class="danger" id="clearBtn" style="margin-top:12px">Effacer toutes les données</button>
+    <p class="note">
+      Les données sont stockées localement dans le navigateur.
+      Pense à exporter régulièrement une sauvegarde.
+    </p>
+  </details>
+</section>
+
+</main>
+
+<footer>Application personnelle de suivi du covoiturage</footer>
+
+<script>
+(() => {
+  const KEY = "covoiturage-tracker-v1";
+  const $ = id => document.getElementById(id);
+
+  const today = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  };
+
+  const monthOf = date => date.slice(0,7);
+  const money = n => new Intl.NumberFormat("fr-FR", {
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  }).format(n);
+
+  const escapeHTML = s => String(s ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+
+  function fresh() {
+    return {
+      version:1,
+      monthlyBase:40,
+      trips:[],
+      payments:[]
+    };
+  }
+
+  function load() {
+    try {
+      const data = JSON.parse(localStorage.getItem(KEY));
+      if(data && Array.isArray(data.trips) && Array.isArray(data.payments))
+        return {...fresh(),...data};
+    } catch(e) {}
+    return fresh();
+  }
+
+  let state = load();
+
+  function save() {
+    localStorage.setItem(KEY,JSON.stringify(state));
+    render();
+  }
+
+  function weekdays(month) {
+    const [y,m] = month.split("-").map(Number);
+    const last = new Date(y,m,0).getDate();
+    let count = 0;
+
+    for(let d=1;d<=last;d++) {
+      const day = new Date(y,m-1,d).getDay();
+      if(day!==0 && day!==6) count++;
+    }
+    return count;
+  }
+
+  function tripCost(date) {
+    return Number(state.monthlyBase || 0) / weekdays(monthOf(date));
+  }
+
+  function monthData(month) {
+    const trips = state.trips.filter(t=>monthOf(t.date)===month);
+    const due = trips.reduce((s,t)=>s+tripCost(t.date),0);
+    const payments = state.payments.filter(p=>p.month===month);
+    const paid = payments.reduce((s,p)=>s+Number(p.amount),0);
+
+    return {
+      trips,due,paid,
+      balance:Math.max(0,due-paid),
+      payments
+    };
+  }
+
+  function monthsList() {
+    return [...new Set([
+      ...state.trips.map(t=>monthOf(t.date)),
+      ...state.payments.map(p=>p.month)
+    ])].sort().reverse();
+  }
+
+  function monthLabel(m) {
+    return new Date(
+      Number(m.slice(0,4)),
+      Number(m.slice(5,7))-1,
+      1
+    ).toLocaleDateString("fr-FR",{
+      month:"long",year:"numeric"
+    });
+  }
+
+  function render() {
+    $("monthlyBase").value=state.monthlyBase;
+
+    const months=monthsList();
+    let due=0,paid=0;
+
+    months.forEach(m=>{
+      const d=monthData(m);
+      due+=d.due;
+      paid+=d.paid;
+    });
+
+    $("globalDue").textContent=money(due)+" CHF";
+    $("globalPaid").textContent=money(paid)+" CHF";
+    $("globalBalance").textContent=money(Math.max(0,due-paid))+" CHF";
+
+    const selected=$("tripDate").value || today();
+
+    $("tripEstimate").textContent=
+      "Coût estimé : "+money(tripCost(selected))+
+      " CHF pour cette journée.";
+
+    $("months").innerHTML=months.length
+      ? months.map(m=>{
+          const d=monthData(m);
+          const settled=d.balance<0.005 && d.due>0;
+          const status=settled?"Réglé":
+            d.paid>0?"Partiellement réglé":"À régler";
+
+          return `
+          <article class="row-item">
+            <div class="row-main">
+              <div class="row-title">${escapeHTML(monthLabel(m))}</div>
+              <div class="row-meta">
+                ${d.trips.length} journée(s) ·
+                Dû ${money(d.due)} ·
+                Réglé ${money(d.paid)}
+              </div>
+              <div class="row-meta">
+                Reste : <strong>${money(d.balance)} CHF</strong>
+              </div>
+              <span class="pill ${settled?'paid':'due'}">${status}</span>
+              ${d.payments.map(p=>`
+                <div class="row-meta">
+                  Paiement : ${money(p.amount)} CHF le ${escapeHTML(p.date)}
+                  <button class="danger" data-del-payment="${p.id}">Supprimer</button>
+                </div>
+              `).join("")}
+            </div>
+            <button class="secondary" data-pay-month="${m}"
+              ${d.balance<0.005?'disabled':''}>Régler</button>
+          </article>`;
+        }).join("")
+      : '<div class="empty">Aucun trajet enregistré.</div>';
+
+    const trips=[...state.trips].sort((a,b)=>b.date.localeCompare(a.date));
+
+    $("trips").innerHTML=trips.length
+      ? trips.map(t=>`
+        <div class="row-item">
+          <div class="row-main">
+            <div class="row-title">
+              ${escapeHTML(new Date(t.date+"T12:00:00").toLocaleDateString("fr-FR"))}
+            </div>
+            <div class="row-meta">
+              ${money(tripCost(t.date))} CHF
+              ${t.note?' · '+escapeHTML(t.note):''}
+            </div>
+          </div>
+          <button class="danger" data-del-trip="${t.id}">Supprimer</button>
+        </div>
+      `).join("")
+      : '<div class="empty">Aucun trajet enregistré.</div>';
+  }
+
+  $("tripDate").value=today();
+  $("paymentDate").value=today();
+  $("paymentMonth").value=monthOf(today());
+
+  $("addTrip").onclick=()=>{
+    const date=$("tripDate").value;
+
+    if(!date) return alert("Choisis une date.");
+    if(state.trips.some(t=>t.date===date))
+      return alert("Cette journée existe déjà.");
+
+    state.trips.push({
+      id:crypto.randomUUID(),
+      date,
+      note:$("tripNote").value.trim()
+    });
+
+    $("tripNote").value="";
+    save();
+  };
+
+  $("todayBtn").onclick=()=>{
+    $("tripDate").value=today();
+    render();
+  };
+
+  $("tripDate").onchange=render;
+
+  $("monthlyBase").onchange=()=>{
+    const value=Number($("monthlyBase").value);
+    if(!Number.isFinite(value)||value<0)
+      return alert("Montant invalide.");
+    state.monthlyBase=value;
+    save();
+  };
+
+  $("fillBalance").onclick=()=>{
+    const month=$("paymentMonth").value;
+    if(!month) return alert("Choisis un mois.");
+    $("paymentAmount").value=monthData(month).balance.toFixed(2);
+  };
+
+  $("addPayment").onclick=()=>{
+    const month=$("paymentMonth").value;
+    const date=$("paymentDate").value;
+    const amount=Number($("paymentAmount").value);
+
+    if(!month||!date||!Number.isFinite(amount)||amount<=0)
+      return alert("Vérifie les informations du paiement.");
+
+    state.payments.push({
+      id:crypto.randomUUID(),
+      month,date,
+      amount:Math.round(amount*100)/100,
+      note:$("paymentNote").value.trim()
+    });
+
+    $("paymentAmount").value="";
+    $("paymentNote").value="";
+    save();
+  };
+
+  $("months").onclick=e=>{
+    const pay=e.target.closest("[data-pay-month]");
+
+    if(pay) {
+      const m=pay.dataset.payMonth;
+      $("paymentMonth").value=m;
+      $("paymentDate").value=today();
+      $("paymentAmount").value=monthData(m).balance.toFixed(2);
+      $("paymentAmount").focus();
+    }
+
+    const del=e.target.closest("[data-del-payment]");
+    if(del && confirm("Supprimer ce règlement ?")) {
+      state.payments=state.payments.filter(
+        p=>p.id!==del.dataset.delPayment
+      );
+      save();
+    }
+  };
+
+  $("trips").onclick=e=>{
+    const del=e.target.closest("[data-del-trip]");
+
+    if(del && confirm("Supprimer cette journée ?")) {
+      state.trips=state.trips.filter(
+        t=>t.id!==del.dataset.delTrip
+      );
+      save();
+    }
+  };
+
+  $("exportBtn").onclick=()=>{
+    const blob=new Blob(
+      [JSON.stringify(state,null,2)],
+      {type:"application/json"}
+    );
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="covoiturage-sauvegarde.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  $("importBtn").onclick=()=>$("importFile").click();
+
+  $("importFile").onchange=async e=>{
+    const file=e.target.files[0];
+    if(!file)return;
+
+    try {
+      const data=JSON.parse(await file.text());
+
+      if(!Array.isArray(data.trips)||!Array.isArray(data.payments))
+        throw new Error();
+
+      if(confirm("Remplacer les données actuelles ?")) {
+        state={...fresh(),...data};
+        save();
+      }
+    } catch(err) {
+      alert("Fichier invalide.");
+    }
+
+    e.target.value="";
+  };
+
+  $("clearBtn").onclick=()=>{
+    if(confirm("Effacer définitivement toutes les données ?")) {
+      state=fresh();
+      save();
+    }
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>
