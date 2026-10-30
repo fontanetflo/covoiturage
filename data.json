@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "monthlyBase": 40,
+  "currency": "CHF",
+  "cars": [
+    {
+      "id": "mine",
+      "name": "Ma voiture",
+      "detail": "",
+      "active": true
+    },
+    {
+      "id": "terrence",
+      "name": "Terrence",
+      "detail": "",
+      "active": true
+    },
+    {
+      "id": "laura",
+      "name": "Laura",
+      "detail": "",
+      "active": true
+    }
+  ],
+  "trips": [],
+  "payments": []
+}
