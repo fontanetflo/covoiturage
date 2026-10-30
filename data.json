@@ -22,7 +22,14 @@
       "active": false
     }
   ],
-  "trips": [],
+  "trips": [
+    {
+      "id": "7ca755cf-9afc-49fc-90ad-3b5010281baf",
+      "date": "2026-10-29",
+      "carId": "terrence",
+      "note": ""
+    }
+  ],
   "payments": [],
-  "updatedAt": "2026-10-30T09:42:34.650Z"
+  "updatedAt": "2026-10-30T09:42:44.844Z"
 }
