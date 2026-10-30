@@ -1,70 +1,54 @@
-
 # 🚗 Mon covoiturage
 
-Petite application web personnelle permettant de suivre les journées de covoiturage, calculer sa participation financière et gérer les règlements mensuels.
+Application web personnelle permettant de suivre les journées de covoiturage, les véhicules utilisés, les participations financières et les règlements mensuels.
 
 ## Fonctionnalités
 
-- Enregistrer une journée de covoiturage avec sa date.
-- Éviter les doublons de dates.
-- Calculer automatiquement la participation au prorata des jours ouvrés du mois.
-- Consulter le montant dû chaque mois.
-- Enregistrer des règlements complets ou partiels.
-- Suivre les montants déjà payés et le solde restant.
-- Conserver l'historique des trajets et des paiements.
-- Exporter et importer une sauvegarde au format JSON.
+* Enregistrement des journées de covoiturage.
+* Sélection du véhicule utilisé : Ma voiture, Terrence ou Laura.
+* Ajout, modification et désactivation des véhicules.
+* Historique des trajets filtrable par véhicule.
+* Statistiques d'utilisation par voiture.
+* Calcul automatique de la participation mensuelle au prorata des jours ouvrés.
+* Gestion des paiements complets et partiels.
+* Suivi du solde restant à payer.
+* Montant mensuel de référence modifiable dans les paramètres.
+* Export et import de sauvegardes JSON.
+* Synchronisation manuelle avec GitHub.
+* Chiffrement des données avec AES-256-GCM.
 
-## Règles de calcul
+## Calcul de la participation
 
-La participation mensuelle de référence est de **40 CHF**.
+Le montant mensuel de référence est de **40 CHF** par défaut.
 
 Le calcul est effectué selon la formule :
 
-Participation par trajet = Participation mensuelle / Nombre de jours ouvrés du mois
-
-Montant mensuel dû = Participation par trajet × Nombre de journées de covoiturage.
+`Participation journalière = Montant mensuel / Nombre de jours ouvrés du mois`
 
 Les jours ouvrés correspondent aux jours du lundi au vendredi. Les jours fériés ne sont pas déduits.
 
-Le montant de référence peut être modifié dans les paramètres.
+Chaque journée enregistrée correspond à un aller-retour.
 
-## Installation et hébergement
+## Synchronisation et sécurité
 
-L'application est entièrement autonome et fonctionne avec HTML, CSS et JavaScript.
+Les données sont stockées localement dans le navigateur et peuvent être synchronisées manuellement avec GitHub.
 
-Aucune installation, base de données ou serveur n'est nécessaire.
+Le fichier `data.json` contient uniquement les données chiffrées.
 
-### Hébergement avec GitHub Pages
+Le chiffrement repose sur :
 
-1. Créer un dépôt GitHub.
-2. Ajouter le fichier `index.html` à la racine du dépôt.
-3. Ouvrir **Settings → Pages**.
-4. Sélectionner **Deploy from a branch**.
-5. Choisir la branche `main` et le dossier `/ (root)`.
-6. Enregistrer et attendre la publication.
+* AES-256-GCM pour le chiffrement des données.
+* PBKDF2 avec SHA-256 pour dériver la clé à partir du mot de passe.
+* Un sel et un vecteur d'initialisation aléatoires.
 
-L'application sera accessible depuis l'adresse fournie par GitHub Pages.
-
-## Stockage des données
-
-Les données sont enregistrées localement dans le navigateur grâce au `localStorage`.
-
-Aucun compte utilisateur ni serveur externe n'est nécessaire.
+La synchronisation nécessite un token GitHub disposant des droits de lecture et d'écriture sur le contenu du dépôt.
 
 **Important :**
-- Les données ne sont pas automatiquement synchronisées entre plusieurs appareils.
-- Il est recommandé d'exporter régulièrement une sauvegarde JSON.
-- Une sauvegarde peut être restaurée à tout moment depuis les paramètres.
 
-## Compatibilité
+* Le token GitHub n'est pas intégré au code source.
+* Le token est conservé uniquement en mémoire pendant la session.
+* Le mot de passe de chiffrement n'est pas enregistré.
+* La perte du mot de passe rend les données chiffrées irrécupérables.
+* Le chiffrement protège la confidentialité des données, mais pas contre la suppression ou le remplacement du fichier sur GitHub en cas de compromission du token.
 
-- iPhone / Safari
-- Android / Chrome
-- Windows / Chrome, Edge, Firefox
-- macOS / Safari, Chrome
-
-Application responsive, utilisable sur smartphone et ordinateur.
-
----
-
-Projet personnel de suivi du covoiturage.
+## Installation
