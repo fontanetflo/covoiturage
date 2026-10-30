@@ -28,14 +28,8 @@
       "date": "2026-10-29",
       "note": "",
       "carId": "mine"
-    },
-    {
-      "id": "cbcf3075-966c-4e3f-aa02-81bf781f4bf3",
-      "date": "2026-10-30",
-      "carId": "mine",
-      "note": ""
     }
   ],
   "payments": [],
-  "updatedAt": "2026-10-30T09:38:37.306Z"
+  "updatedAt": "2026-10-30T09:39:04.824Z"
 }
