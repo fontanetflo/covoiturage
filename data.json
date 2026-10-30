@@ -22,14 +22,7 @@
       "active": false
     }
   ],
-  "trips": [
-    {
-      "id": "7ddf6b2f-5ad0-4b01-a06f-acbab7438305",
-      "date": "2026-10-29",
-      "carId": "mine",
-      "note": ""
-    }
-  ],
+  "trips": [],
   "payments": [],
-  "updatedAt": "2026-10-30T09:41:52.300Z"
+  "updatedAt": "2026-10-30T09:42:17.960Z"
 }
