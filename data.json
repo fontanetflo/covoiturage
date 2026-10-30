@@ -6,7 +6,7 @@
     {
       "id": "mine",
       "name": "Ma voiture",
-      "detail": "",
+      "detail": "Golf",
       "active": true
     },
     {
@@ -31,5 +31,5 @@
     }
   ],
   "payments": [],
-  "updatedAt": "2026-10-30T09:39:26.840Z"
+  "updatedAt": "2026-10-30T09:39:48.169Z"
 }
