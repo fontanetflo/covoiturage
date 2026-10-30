@@ -1,27 +1,10 @@
 {
-  "version": 2,
-  "monthlyBase": 40,
-  "currency": "CHF",
-  "cars": [
-    {
-      "id": "mine",
-      "name": "Ma voiture",
-      "detail": "",
-      "active": true
-    },
-    {
-      "id": "terrence",
-      "name": "Terrence",
-      "detail": "",
-      "active": true
-    },
-    {
-      "id": "laura",
-      "name": "Laura",
-      "detail": "",
-      "active": true
-    }
-  ],
-  "trips": [],
-  "payments": []
+  "format": "covoiturage-encrypted-v1",
+  "algorithm": "AES-256-GCM",
+  "kdf": "PBKDF2-SHA-256",
+  "iterations": 600000,
+  "salt": "BJl71naRbcmy2K27rCSosg==",
+  "iv": "DzHeqA3eER1qcowH",
+  "ciphertext": "5B7fztKqyfZ51ALOayS2u6aeSkr1AQfe6nbnz0LvH4cb916NJclwIKxYFTopBsu+99EJSo5NWDfyg4jrt3f+VS5yftpXbAh1q9JgfF/gfwqPi67BL1QH29I6r6+OX6smFHS9YTY6R8THDh0dS1W/laKxn5d/+p+5ffIUTDVIqrlD/4rwmFGfrCRNLzP9LgKqczGsJNQ8nUN4mjkHEpmRor3CiX2mEvIfAGIGplyYJ1uMdmeZETJfZCLnbaMfMrZvHWv1u58+ksNnAPdmG3a6Y3zB6So9JOgg95HJ4sR+AoeiXgQUlnUuHbDaAvfEHm5/kIb8vz+V5cAkc8DazNDHZQsBz0rn+kdI50ca1jVf5xGOgXM=",
+  "updatedAt": "2026-10-30T09:23:46.981Z"
 }
