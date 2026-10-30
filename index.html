@@ -1,539 +1,144 @@
-
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#14231f">
-<title>Mon covoiturage</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14231f"><title>Mon covoiturage — V2</title>
 <style>
-:root {
-  --ink:#18231f;
-  --muted:#66736d;
-  --line:#e0e7e2;
-  --paper:#f5f7f5;
-  --green:#246b50;
-  --green2:#e5f2ea;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-header {
-  background:#14231f;
-  color:white;
-  padding:26px 18px;
-  border-radius:0 0 24px 24px;
-}
-.wrap { max-width:900px; margin:auto; padding:0 16px; }
-h1 { margin:8px 0; font-size:1.8rem; }
-h2 { font-size:1.1rem; margin:0; }
-header p { color:#d0ded6; margin:0; }
-main { padding:20px 0 40px; }
-.cards {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-.card,.panel {
-  background:white;
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-}
-.metric-label { color:var(--muted); font-size:.85rem; }
-.metric { font-size:1.5rem; font-weight:800; margin-top:5px; }
-.panel { margin-top:14px; }
-.panel-head { margin-bottom:14px; }
-.sub,.note { color:var(--muted); font-size:.85rem; }
-.form-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.field { display:flex; flex-direction:column; gap:6px; }
-label { font-size:.85rem; color:var(--muted); font-weight:650; }
-input,select {
-  width:100%;
-  padding:11px;
-  border:1px solid #d4ddd7;
-  border-radius:11px;
-  font:inherit;
-  min-height:44px;
-}
-button {
-  border:0;
-  border-radius:12px;
-  padding:11px 14px;
-  font:inherit;
-  font-weight:700;
-  cursor:pointer;
-}
-.primary { background:var(--green); color:white; }
-.secondary { background:var(--green2); color:var(--green); }
-.plain { background:#f0f3f1; color:var(--ink); }
-.danger { background:#fae9e7; color:#a83e37; }
-.actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-.list { display:flex; flex-direction:column; gap:8px; }
-.row-item {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:13px;
-}
-.row-main { flex:1; min-width:0; }
-.row-title { font-weight:700; }
-.row-meta { color:var(--muted); font-size:.82rem; margin-top:3px; }
-.pill {
-  display:inline-block;
-  padding:4px 9px;
-  border-radius:20px;
-  font-size:.75rem;
-  font-weight:700;
-}
-.paid { background:var(--green2); color:var(--green); }
-.due { background:#fff0d5; color:#8b6418; }
-.empty { text-align:center; padding:18px; color:var(--muted); }
-.amount { font-weight:800; white-space:nowrap; }
-footer { text-align:center; color:var(--muted); font-size:.8rem; padding:20px; }
-@media(max-width:620px) {
-  .cards { grid-template-columns:1fr 1fr; }
-  .cards .card:last-child { grid-column:1/-1; }
-  .form-grid { grid-template-columns:1fr; }
-}
-</style>
-</head>
+:root{--ink:#18231f;--muted:#66736d;--line:#e0e7e2;--paper:#f5f7f5;--green:#246b50;--green2:#e5f2ea;--red:#a83e37;--amber:#8b6418}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#14231f;color:white;padding:24px 18px 22px;border-radius:0 0 24px 24px}.wrap{max-width:940px;margin:auto;padding:0 16px}header .wrap{padding:0 2px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#b6d5c4;font-weight:700}h1{font-size:1.7rem;margin:7px 0 5px}header p{color:#d0ded6;margin:0}
+main{padding:16px 0 42px}.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}.tab{background:#e8eeea;color:#405048;white-space:nowrap}.tab.active{background:#246b50;color:white}
+.panel,.card{background:white;border:1px solid var(--line);border-radius:17px;padding:15px;box-shadow:0 8px 28px #1930250d;margin:12px 0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.cards .card{margin:0}.metric-label,.sub,.meta,.small{color:var(--muted);font-size:.83rem}.metric{font-size:1.45rem;font-weight:800;margin-top:3px}
+h2{font-size:1.08rem;margin:0}.head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+button,input,select{font:inherit}button{border:0;border-radius:11px;padding:10px 13px;font-weight:700;cursor:pointer}.primary{background:var(--green);color:white}.secondary{background:var(--green2);color:var(--green)}.plain{background:#eff2f0;color:var(--ink)}.danger{background:#fae9e7;color:var(--red)}
+input,select{width:100%;border:1px solid #d4ddd7;border-radius:10px;padding:10px 11px;background:white;min-height:43px;color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:.84rem;color:var(--muted);font-weight:650}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.list{display:flex;flex-direction:column;gap:8px}.item{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:12px}.itemmain{flex:1;min-width:0}.title{font-weight:750}.meta{margin-top:2px}.amount{font-weight:800;white-space:nowrap}.pill{display:inline-block;border-radius:99px;padding:3px 8px;font-size:.74rem;font-weight:750}.paid{background:var(--green2);color:var(--green)}.due{background:#fff0d5;color:var(--amber)}.empty{padding:18px;text-align:center;color:var(--muted);font-size:.9rem}.note{font-size:.8rem;color:var(--muted);margin-top:9px;line-height:1.5}.hidden{display:none!important}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#14231f;color:white;padding:11px 15px;border-radius:11px;z-index:5;max-width:90%}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+@media(max-width:620px){.cards{grid-template-columns:1fr 1fr}.cards .card:last-child{grid-column:1/-1}.grid{grid-template-columns:1fr}.item{align-items:flex-start}.metric{font-size:1.3rem}}
+</style></head>
 <body>
-
-<header>
-  <div class="wrap">
-    <div class="sub">SUIVI PERSONNEL</div>
-    <h1>Mon covoiturage</h1>
-    <p>Suivi des trajets et des règlements mensuels.</p>
-  </div>
-</header>
-
+<header><div class="wrap"><div class="eyebrow">Suivi personnel</div><h1>Mon covoiturage</h1><p>Trajets, véhicules, participation et règlements.</p></div></header>
 <main class="wrap">
-
-<section class="cards">
-  <div class="card">
-    <div class="metric-label">Reste à payer</div>
-    <div class="metric" id="globalBalance">0,00 CHF</div>
-  </div>
-  <div class="card">
-    <div class="metric-label">Total dû</div>
-    <div class="metric" id="globalDue">0,00 CHF</div>
-  </div>
-  <div class="card">
-    <div class="metric-label">Total réglé</div>
-    <div class="metric" id="globalPaid">0,00 CHF</div>
-  </div>
+<nav class="tabs"><button class="tab active" data-tab="dashboard">Tableau de bord</button><button class="tab" data-tab="history">Historique</button><button class="tab" data-tab="settings">Paramètres</button></nav>
+<section id="dashboard">
+<div class="cards">
+ <div class="card"><div class="metric-label">Reste à payer</div><div class="metric" id="globalBalance">0,00 CHF</div></div>
+ <div class="card"><div class="metric-label">Total dû</div><div class="metric" id="globalDue">0,00 CHF</div></div>
+ <div class="card"><div class="metric-label">Total réglé</div><div class="metric" id="globalPaid">0,00 CHF</div></div>
+</div>
+<div class="panel"><div class="head"><div><h2>Ajouter une journée</h2><div class="sub">Une journée = un aller-retour.</div></div></div>
+ <div class="grid">
+  <div class="field"><label for="tripDate">Date</label><input id="tripDate" type="date"></div>
+  <div class="field"><label for="tripCar">Voiture utilisée</label><select id="tripCar"></select></div>
+  <div class="field" style="grid-column:1/-1"><label for="tripNote">Note (facultatif)</label><input id="tripNote" maxlength="100" placeholder="Ex. retour tardif"></div>
+ </div><div class="actions"><button class="primary" id="addTrip">Enregistrer la journée</button><button class="plain" id="todayBtn">Aujourd'hui</button></div><div class="note" id="tripEstimate"></div>
+</div>
+<div class="panel"><div class="head"><div><h2>Régler un mois</h2><div class="sub">Paiement complet ou partiel.</div></div></div>
+ <div class="grid">
+  <div class="field"><label for="paymentMonth">Mois concerné</label><input id="paymentMonth" type="month"></div>
+  <div class="field"><label for="paymentDate">Date du paiement</label><input id="paymentDate" type="date"></div>
+  <div class="field"><label for="paymentAmount">Montant payé</label><input id="paymentAmount" type="number" min=".01" step=".01" placeholder="40.00"></div>
+  <div class="field"><label for="paymentNote">Note (facultatif)</label><input id="paymentNote" maxlength="100" placeholder="Ex. virement"></div>
+ </div><div class="actions"><button class="primary" id="addPayment">Enregistrer le règlement</button><button class="secondary" id="fillBalance">Préremplir le solde</button></div>
+</div>
+<div class="panel"><div class="head"><div><h2>Récapitulatif mensuel</h2><div class="sub">Les mois réglés restent visibles.</div></div></div><div id="months" class="list"></div></div>
+<div class="panel"><h2>Répartition par voiture</h2><div class="note">Nombre de journées enregistrées par véhicule.</div><div id="carStats" class="list" style="margin-top:10px"></div></div>
 </section>
-
-<section class="panel">
-  <div class="panel-head">
-    <h2>Ajouter un covoiturage</h2>
-    <div class="sub">Une journée correspond à un aller-retour.</div>
-  </div>
-  <div class="form-grid">
-    <div class="field">
-      <label for="tripDate">Date</label>
-      <input id="tripDate" type="date">
-    </div>
-    <div class="field">
-      <label for="tripNote">Note facultative</label>
-      <input id="tripNote" type="text" placeholder="Commentaire">
-    </div>
-  </div>
-  <div class="actions">
-    <button class="primary" id="addTrip">+ Ajouter une journée</button>
-    <button class="plain" id="todayBtn">Aujourd'hui</button>
-  </div>
-  <p class="note" id="tripEstimate"></p>
+<section id="history" class="hidden">
+<div class="panel"><div class="head"><div><h2>Historique des trajets</h2><div class="sub">Filtre par véhicule pour retrouver les journées.</div></div></div>
+<div class="field"><label for="historyCar">Véhicule</label><select id="historyCar"><option value="">Toutes les voitures</option></select></div>
+<div id="trips" class="list" style="margin-top:12px"></div></div>
+<div class="panel"><h2>Historique des paiements</h2><div id="payments" class="list" style="margin-top:12px"></div></div>
 </section>
-
-<section class="panel">
-  <div class="panel-head">
-    <h2>Enregistrer un règlement</h2>
-    <div class="sub">Paiement complet ou partiel.</div>
-  </div>
-  <div class="form-grid">
-    <div class="field">
-      <label for="paymentMonth">Mois concerné</label>
-      <input id="paymentMonth" type="month">
-    </div>
-    <div class="field">
-      <label for="paymentDate">Date du paiement</label>
-      <input id="paymentDate" type="date">
-    </div>
-    <div class="field">
-      <label for="paymentAmount">Montant payé (CHF)</label>
-      <input id="paymentAmount" type="number" min="0.01" step="0.01">
-    </div>
-    <div class="field">
-      <label for="paymentNote">Note facultative</label>
-      <input id="paymentNote" type="text" placeholder="Virement, espèces...">
-    </div>
-  </div>
-  <div class="actions">
-    <button class="primary" id="addPayment">Enregistrer le règlement</button>
-    <button class="secondary" id="fillBalance">Préremplir le solde</button>
-  </div>
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <h2>Récapitulatif mensuel</h2>
-    <div class="sub">Suivi des montants dus et réglés.</div>
-  </div>
-  <div id="months" class="list">
-    <div class="empty">Aucun trajet enregistré.</div>
-  </div>
-</section>
-
-<section class="panel">
-  <div class="panel-head">
-    <h2>Historique des trajets</h2>
-  </div>
-  <div id="trips" class="list">
-    <div class="empty">Aucun trajet enregistré.</div>
-  </div>
-</section>
-
-<section class="panel">
-  <details>
-    <summary>Paramètres et sauvegarde</summary>
-    <div class="field" style="margin-top:15px">
-      <label for="monthlyBase">Participation mensuelle (CHF)</label>
-      <input id="monthlyBase" type="number" min="0" step="0.01" value="40">
-    </div>
-    <div class="actions">
-      <button class="secondary" id="exportBtn">Exporter JSON</button>
-      <button class="plain" id="importBtn">Importer JSON</button>
-      <input id="importFile" type="file" accept=".json" hidden>
-    </div>
-    <button class="danger" id="clearBtn" style="margin-top:12px">Effacer toutes les données</button>
-    <p class="note">
-      Les données sont stockées localement dans le navigateur.
-      Pense à exporter régulièrement une sauvegarde.
-    </p>
-  </details>
-</section>
-
-</main>
-
-<footer>Application personnelle de suivi du covoiturage</footer>
-
+<section id="settings" class="hidden">
+<div class="panel"><h2>Calcul de la participation</h2><div class="note">Montant de référence réparti sur les jours du lundi au vendredi du mois. Les jours fériés ne sont pas retirés.</div>
+<div class="grid" style="margin-top:12px"><div class="field"><label for="monthlyBase">Participation mensuelle</label><input id="monthlyBase" type="number" min="0" step=".01"></div><div class="field"><label for="currency">Devise</label><select id="currency"><option>CHF</option><option>EUR</option></select></div></div><div class="actions"><button class="primary" id="saveSettings">Enregistrer les paramètres</button></div></div>
+<div class="panel"><div class="head"><div><h2>Véhicules</h2><div class="sub">Renomme, ajoute ou désactive les véhicules disponibles.</div></div></div>
+<div id="cars" class="list"></div><hr><div class="grid"><div class="field"><label for="newCar">Nom du véhicule / conducteur</label><input id="newCar" placeholder="Ex. Laura"></div><div class="field"><label for="newCarDetail">Précision (facultatif)</label><input id="newCarDetail" placeholder="Ex. BMW Série 3"></div></div><div class="actions"><button class="secondary" id="addCar">Ajouter un véhicule</button></div></div>
+<div class="panel"><h2>Synchronisation GitHub chiffrée</h2>
+<div class="note">Le fichier data.json du dépôt ne contiendra que des données chiffrées. Le mot de passe ne quitte pas ton navigateur. Le token GitHub est gardé uniquement en mémoire tant que cette page reste ouverte.</div>
+<div class="grid" style="margin-top:12px">
+<div class="field"><label for="ghOwner">Propriétaire GitHub</label><input id="ghOwner" placeholder="ton-pseudo"></div>
+<div class="field"><label for="ghRepo">Nom du dépôt</label><input id="ghRepo" placeholder="covoiturage"></div>
+<div class="field"><label for="ghBranch">Branche</label><input id="ghBranch" value="main"></div>
+<div class="field"><label for="ghPath">Chemin du fichier</label><input id="ghPath" value="data.json"></div>
+<div class="field" style="grid-column:1/-1"><label for="ghPassword">Mot de passe de chiffrement</label><input id="ghPassword" type="password" autocomplete="new-password" placeholder="Mot de passe robuste"></div>
+<div class="field" style="grid-column:1/-1"><label for="ghToken">Token GitHub (fine-grained)</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div>
+</div>
+<div class="actions"><button class="secondary" id="loadCloud">Charger depuis GitHub</button><button class="primary" id="saveCloud">Chiffrer et sauvegarder sur GitHub</button></div>
+<div class="note" id="cloudStatus">Configuration non enregistrée sur le serveur. Les champs de connexion ne sont pas sauvegardés localement.</div>
+<hr><h2>Sauvegarde locale</h2><div class="actions"><button class="secondary" id="exportBtn">Exporter une sauvegarde JSON en clair</button><button class="plain" id="importBtn">Importer une sauvegarde JSON</button><input id="importFile" type="file" accept=".json,application/json" hidden></div>
+<div class="note">Conserve l'export local dans un endroit sûr. Le fichier exporté est en clair, contrairement au data.json GitHub. En cas de perte du mot de passe de chiffrement, le fichier GitHub ne pourra plus être déchiffré.</div>
+<div class="actions"><button class="danger" id="clearBtn">Effacer les données de cet appareil</button></div>
+</div></section>
+</main><footer class="wrap note" style="text-align:center;padding-bottom:24px">Application personnelle · synchronisation GitHub à la demande</footer>
+<div id="toast" class="toast" hidden></div>
 <script>
-(() => {
-  const KEY = "covoiturage-tracker-v1";
-  const $ = id => document.getElementById(id);
-
-  const today = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-  };
-
-  const monthOf = date => date.slice(0,7);
-  const money = n => new Intl.NumberFormat("fr-FR", {
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  }).format(n);
-
-  const escapeHTML = s => String(s ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-
-  function fresh() {
-    return {
-      version:1,
-      monthlyBase:40,
-      trips:[],
-      payments:[]
-    };
-  }
-
-  function load() {
-    try {
-      const data = JSON.parse(localStorage.getItem(KEY));
-      if(data && Array.isArray(data.trips) && Array.isArray(data.payments))
-        return {...fresh(),...data};
-    } catch(e) {}
-    return fresh();
-  }
-
-  let state = load();
-
-  function save() {
-    localStorage.setItem(KEY,JSON.stringify(state));
-    render();
-  }
-
-  function weekdays(month) {
-    const [y,m] = month.split("-").map(Number);
-    const last = new Date(y,m,0).getDate();
-    let count = 0;
-
-    for(let d=1;d<=last;d++) {
-      const day = new Date(y,m-1,d).getDay();
-      if(day!==0 && day!==6) count++;
-    }
-    return count;
-  }
-
-  function tripCost(date) {
-    return Number(state.monthlyBase || 0) / weekdays(monthOf(date));
-  }
-
-  function monthData(month) {
-    const trips = state.trips.filter(t=>monthOf(t.date)===month);
-    const due = trips.reduce((s,t)=>s+tripCost(t.date),0);
-    const payments = state.payments.filter(p=>p.month===month);
-    const paid = payments.reduce((s,p)=>s+Number(p.amount),0);
-
-    return {
-      trips,due,paid,
-      balance:Math.max(0,due-paid),
-      payments
-    };
-  }
-
-  function monthsList() {
-    return [...new Set([
-      ...state.trips.map(t=>monthOf(t.date)),
-      ...state.payments.map(p=>p.month)
-    ])].sort().reverse();
-  }
-
-  function monthLabel(m) {
-    return new Date(
-      Number(m.slice(0,4)),
-      Number(m.slice(5,7))-1,
-      1
-    ).toLocaleDateString("fr-FR",{
-      month:"long",year:"numeric"
-    });
-  }
-
-  function render() {
-    $("monthlyBase").value=state.monthlyBase;
-
-    const months=monthsList();
-    let due=0,paid=0;
-
-    months.forEach(m=>{
-      const d=monthData(m);
-      due+=d.due;
-      paid+=d.paid;
-    });
-
-    $("globalDue").textContent=money(due)+" CHF";
-    $("globalPaid").textContent=money(paid)+" CHF";
-    $("globalBalance").textContent=money(Math.max(0,due-paid))+" CHF";
-
-    const selected=$("tripDate").value || today();
-
-    $("tripEstimate").textContent=
-      "Coût estimé : "+money(tripCost(selected))+
-      " CHF pour cette journée.";
-
-    $("months").innerHTML=months.length
-      ? months.map(m=>{
-          const d=monthData(m);
-          const settled=d.balance<0.005 && d.due>0;
-          const status=settled?"Réglé":
-            d.paid>0?"Partiellement réglé":"À régler";
-
-          return `
-          <article class="row-item">
-            <div class="row-main">
-              <div class="row-title">${escapeHTML(monthLabel(m))}</div>
-              <div class="row-meta">
-                ${d.trips.length} journée(s) ·
-                Dû ${money(d.due)} ·
-                Réglé ${money(d.paid)}
-              </div>
-              <div class="row-meta">
-                Reste : <strong>${money(d.balance)} CHF</strong>
-              </div>
-              <span class="pill ${settled?'paid':'due'}">${status}</span>
-              ${d.payments.map(p=>`
-                <div class="row-meta">
-                  Paiement : ${money(p.amount)} CHF le ${escapeHTML(p.date)}
-                  <button class="danger" data-del-payment="${p.id}">Supprimer</button>
-                </div>
-              `).join("")}
-            </div>
-            <button class="secondary" data-pay-month="${m}"
-              ${d.balance<0.005?'disabled':''}>Régler</button>
-          </article>`;
-        }).join("")
-      : '<div class="empty">Aucun trajet enregistré.</div>';
-
-    const trips=[...state.trips].sort((a,b)=>b.date.localeCompare(a.date));
-
-    $("trips").innerHTML=trips.length
-      ? trips.map(t=>`
-        <div class="row-item">
-          <div class="row-main">
-            <div class="row-title">
-              ${escapeHTML(new Date(t.date+"T12:00:00").toLocaleDateString("fr-FR"))}
-            </div>
-            <div class="row-meta">
-              ${money(tripCost(t.date))} CHF
-              ${t.note?' · '+escapeHTML(t.note):''}
-            </div>
-          </div>
-          <button class="danger" data-del-trip="${t.id}">Supprimer</button>
-        </div>
-      `).join("")
-      : '<div class="empty">Aucun trajet enregistré.</div>';
-  }
-
-  $("tripDate").value=today();
-  $("paymentDate").value=today();
-  $("paymentMonth").value=monthOf(today());
-
-  $("addTrip").onclick=()=>{
-    const date=$("tripDate").value;
-
-    if(!date) return alert("Choisis une date.");
-    if(state.trips.some(t=>t.date===date))
-      return alert("Cette journée existe déjà.");
-
-    state.trips.push({
-      id:crypto.randomUUID(),
-      date,
-      note:$("tripNote").value.trim()
-    });
-
-    $("tripNote").value="";
-    save();
-  };
-
-  $("todayBtn").onclick=()=>{
-    $("tripDate").value=today();
-    render();
-  };
-
-  $("tripDate").onchange=render;
-
-  $("monthlyBase").onchange=()=>{
-    const value=Number($("monthlyBase").value);
-    if(!Number.isFinite(value)||value<0)
-      return alert("Montant invalide.");
-    state.monthlyBase=value;
-    save();
-  };
-
-  $("fillBalance").onclick=()=>{
-    const month=$("paymentMonth").value;
-    if(!month) return alert("Choisis un mois.");
-    $("paymentAmount").value=monthData(month).balance.toFixed(2);
-  };
-
-  $("addPayment").onclick=()=>{
-    const month=$("paymentMonth").value;
-    const date=$("paymentDate").value;
-    const amount=Number($("paymentAmount").value);
-
-    if(!month||!date||!Number.isFinite(amount)||amount<=0)
-      return alert("Vérifie les informations du paiement.");
-
-    state.payments.push({
-      id:crypto.randomUUID(),
-      month,date,
-      amount:Math.round(amount*100)/100,
-      note:$("paymentNote").value.trim()
-    });
-
-    $("paymentAmount").value="";
-    $("paymentNote").value="";
-    save();
-  };
-
-  $("months").onclick=e=>{
-    const pay=e.target.closest("[data-pay-month]");
-
-    if(pay) {
-      const m=pay.dataset.payMonth;
-      $("paymentMonth").value=m;
-      $("paymentDate").value=today();
-      $("paymentAmount").value=monthData(m).balance.toFixed(2);
-      $("paymentAmount").focus();
-    }
-
-    const del=e.target.closest("[data-del-payment]");
-    if(del && confirm("Supprimer ce règlement ?")) {
-      state.payments=state.payments.filter(
-        p=>p.id!==del.dataset.delPayment
-      );
-      save();
-    }
-  };
-
-  $("trips").onclick=e=>{
-    const del=e.target.closest("[data-del-trip]");
-
-    if(del && confirm("Supprimer cette journée ?")) {
-      state.trips=state.trips.filter(
-        t=>t.id!==del.dataset.delTrip
-      );
-      save();
-    }
-  };
-
-  $("exportBtn").onclick=()=>{
-    const blob=new Blob(
-      [JSON.stringify(state,null,2)],
-      {type:"application/json"}
-    );
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;
-    a.download="covoiturage-sauvegarde.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  $("importBtn").onclick=()=>$("importFile").click();
-
-  $("importFile").onchange=async e=>{
-    const file=e.target.files[0];
-    if(!file)return;
-
-    try {
-      const data=JSON.parse(await file.text());
-
-      if(!Array.isArray(data.trips)||!Array.isArray(data.payments))
-        throw new Error();
-
-      if(confirm("Remplacer les données actuelles ?")) {
-        state={...fresh(),...data};
-        save();
-      }
-    } catch(err) {
-      alert("Fichier invalide.");
-    }
-
-    e.target.value="";
-  };
-
-  $("clearBtn").onclick=()=>{
-    if(confirm("Effacer définitivement toutes les données ?")) {
-      state=fresh();
-      save();
-    }
-  };
-
-  render();
+(()=> {
+const KEY="covoiturage-tracker-v2", $=id=>document.getElementById(id);
+const today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
+const monthOf=d=>d.slice(0,7), money=n=>new Intl.NumberFormat("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random());
+const fresh=()=>({version:2,monthlyBase:40,currency:"CHF",cars:[{id:"mine",name:"Ma voiture",detail:"",active:true},{id:"terrence",name:"Terrence",detail:"",active:true},{id:"laura",name:"Laura",detail:"",active:true}],trips:[],payments:[]});
+function normalize(s){let d={...fresh(),...s};d.cars=Array.isArray(d.cars)&&d.cars.length?d.cars:fresh().cars;d.trips=(d.trips||[]).map(t=>({...t,carId:t.carId||"mine"}));return d}
+function load(){try{let v=JSON.parse(localStorage.getItem(KEY));if(v&&Array.isArray(v.trips))return normalize(v);
+let old=JSON.parse(localStorage.getItem("covoiturage-tracker-v1"));if(old&&Array.isArray(old.trips)){let n=normalize(old);n.trips=n.trips.map(t=>({...t,carId:"mine"}));return n}}catch(e){}return fresh()}
+let state=load(), githubSha=null, tokenInMemory="";
+function toast(m){let e=$("toast");e.textContent=m;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3000)}
+function persist(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function weekdays(m){let [y,mo]=m.split("-").map(Number),n=0;for(let d=1;d<=new Date(y,mo,0).getDate();d++){let w=new Date(y,mo-1,d).getDay();if(w!==0&&w!==6)n++}return n}
+function cost(date){let n=weekdays(monthOf(date));return n?Number(state.monthlyBase||0)/n:0}
+function md(m){let trips=state.trips.filter(t=>monthOf(t.date)===m),payments=state.payments.filter(p=>p.month===m),due=trips.reduce((a,t)=>a+cost(t.date),0),paid=payments.reduce((a,p)=>a+Number(p.amount||0),0);return{trips,payments,due,paid,balance:Math.max(0,due-paid)}}
+function months(){return [...new Set([...state.trips.map(t=>monthOf(t.date)),...state.payments.map(p=>p.month)])].sort().reverse()}
+function monthLabel(m){return new Date(+m.slice(0,4),+m.slice(5,7)-1,1).toLocaleDateString("fr-FR",{month:"long",year:"numeric"})}
+function carName(id){return state.cars.find(c=>c.id===id)?.name||"Véhicule archivé"}
+function refreshCarSelects(){
+let active=state.cars.filter(c=>c.active);
+$("tripCar").innerHTML=active.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join("");
+let current=$("historyCar").value;$("historyCar").innerHTML='<option value="">Toutes les voitures</option>'+state.cars.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}${c.active?"":" (inactive)"}</option>`).join("");$("historyCar").value=current;
+}
+function render(){
+$("monthlyBase").value=state.monthlyBase;$("currency").value=state.currency;refreshCarSelects();
+let ms=months(),due=0,paid=0;ms.forEach(m=>{let x=md(m);due+=x.due;paid+=x.paid});
+$("globalDue").textContent=money(due)+" "+state.currency;$("globalPaid").textContent=money(paid)+" "+state.currency;$("globalBalance").textContent=money(Math.max(0,due-paid))+" "+state.currency;
+let dt=$("tripDate").value||today();$("tripEstimate").textContent=`Estimation : ${money(cost(dt))} ${state.currency} pour cette journée (base ${money(state.monthlyBase)} ${state.currency} / ${weekdays(monthOf(dt))} jours ouvrés).`;
+$("months").innerHTML=ms.length?ms.map(m=>{let x=md(m),settled=x.balance<.005&&x.due>0;return `<div class="item"><div class="itemmain"><div class="title">${esc(monthLabel(m))}</div><div class="meta">${x.trips.length} journée(s) · Dû ${money(x.due)} · Réglé ${money(x.paid)}</div><div class="meta">Solde : <b>${money(x.balance)} ${state.currency}</b></div><span class="pill ${settled?"paid":"due"}">${settled?"Réglé":x.paid?"Partiellement réglé":"À régler"}</span></div><button class="secondary" data-pay-month="${m}" ${x.balance<.005?"disabled":""}>Régler</button></div>`}).join(""):'<div class="empty">Aucun trajet enregistré.</div>';
+$("trips").innerHTML=renderTrips();$("payments").innerHTML=state.payments.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(p=>`<div class="item"><div class="itemmain"><div class="title">${money(p.amount)} ${state.currency}</div><div class="meta">${esc(monthLabel(p.month))} · payé le ${esc(p.date)}${p.note?" · "+esc(p.note):""}</div></div><button class="danger" data-del-payment="${esc(p.id)}">Supprimer</button></div>`).join("")||'<div class="empty">Aucun paiement.</div>';
+$("carStats").innerHTML=state.cars.map(c=>{let ts=state.trips.filter(t=>t.carId===c.id);return `<div class="item"><div class="itemmain"><div class="title">${esc(c.name)}</div><div class="meta">${ts.length} journée(s) enregistrée(s)${c.detail?" · "+esc(c.detail):""}</div></div><b>${state.trips.length?Math.round(ts.length/state.trips.length*100):0}%</b></div>`}).join("");
+$("cars").innerHTML=state.cars.map(c=>`<div class="item"><div class="itemmain"><input data-car-name="${esc(c.id)}" value="${esc(c.name)}" aria-label="Nom du véhicule"><div class="meta"><input data-car-detail="${esc(c.id)}" value="${esc(c.detail||"")}" placeholder="Détail facultatif" aria-label="Détail du véhicule"></div><label class="small"><input type="checkbox" data-car-active="${esc(c.id)}" ${c.active?"checked":""} style="width:auto;min-height:0"> Disponible pour les nouveaux trajets</label></div><button class="secondary" data-save-car="${esc(c.id)}">OK</button></div>`).join("");
+}
+function renderTrips(){let f=$("historyCar").value,arr=state.trips.filter(t=>!f||t.carId===f).slice().sort((a,b)=>b.date.localeCompare(a.date));return arr.length?arr.map(t=>`<div class="item"><div class="itemmain"><div class="title">${esc(new Date(t.date+"T12:00:00").toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}))}</div><div class="meta">${esc(carName(t.carId))} · ${money(cost(t.date))} ${state.currency}${t.note?" · "+esc(t.note):""}</div></div><button class="danger" data-del-trip="${esc(t.id)}">Supprimer</button></div>`).join(""):'<div class="empty">Aucun trajet pour ce filtre.</div>'}
+$("tripDate").value=today();$("paymentDate").value=today();$("paymentMonth").value=monthOf(today());
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));["dashboard","history","settings"].forEach(id=>$(id).classList.toggle("hidden",id!==b.dataset.tab));}));
+$("addTrip").onclick=()=>{let date=$("tripDate").value,carId=$("tripCar").value;if(!date||!carId)return toast("Choisis une date et un véhicule.");if(state.trips.some(t=>t.date===date))return toast("Cette date est déjà enregistrée.");state.trips.push({id:uid(),date,carId,note:$("tripNote").value.trim()});$("tripNote").value="";persist();toast("Journée enregistrée.")};
+$("todayBtn").onclick=()=>{$("tripDate").value=today();render()};$("tripDate").onchange=render;
+$("saveSettings").onclick=()=>{let n=Number($("monthlyBase").value);if(!Number.isFinite(n)||n<0)return toast("Montant invalide.");state.monthlyBase=n;state.currency=$("currency").value;persist();toast("Paramètres enregistrés.")};
+$("addCar").onclick=()=>{let name=$("newCar").value.trim();if(!name)return toast("Saisis un nom de véhicule.");state.cars.push({id:uid(),name,detail:$("newCarDetail").value.trim(),active:true});$("newCar").value="";$("newCarDetail").value="";persist();toast("Véhicule ajouté.")};
+$("cars").onclick=e=>{let b=e.target.closest("[data-save-car]");if(!b)return;let id=b.dataset.saveCar,c=state.cars.find(x=>x.id===id);c.name=$("cars").querySelector(`[data-car-name="${CSS.escape(id)}"]`).value.trim()||c.name;c.detail=$("cars").querySelector(`[data-car-detail="${CSS.escape(id)}"]`).value.trim();c.active=$("cars").querySelector(`[data-car-active="${CSS.escape(id)}"]`).checked;persist();toast("Véhicule mis à jour.")};
+$("historyCar").onchange=()=>{$("trips").innerHTML=renderTrips()};
+$("addPayment").onclick=()=>{let month=$("paymentMonth").value,date=$("paymentDate").value,amount=Number($("paymentAmount").value);if(!month||!date||!Number.isFinite(amount)||amount<=0)return toast("Renseigne le mois, la date et un montant positif.");state.payments.push({id:uid(),month,date,amount:Math.round(amount*100)/100,note:$("paymentNote").value.trim()});$("paymentAmount").value="";$("paymentNote").value="";persist();toast("Règlement enregistré.")};
+$("fillBalance").onclick=()=>{let m=$("paymentMonth").value;if(!m)return toast("Choisis un mois.");$("paymentAmount").value=md(m).balance.toFixed(2)};
+$("paymentMonth").onchange=()=>{let m=$("paymentMonth").value;if(m)$("paymentAmount").value=md(m).balance.toFixed(2)};
+$("months").onclick=e=>{let b=e.target.closest("[data-pay-month]");if(b){$("paymentMonth").value=b.dataset.payMonth;$("paymentAmount").value=md(b.dataset.payMonth).balance.toFixed(2);document.querySelector('[data-tab="dashboard"]').click();$("paymentAmount").focus()}};
+$("trips").onclick=e=>{let b=e.target.closest("[data-del-trip]");if(b&&confirm("Supprimer cette journée ?")){state.trips=state.trips.filter(t=>t.id!==b.dataset.delTrip);persist();toast("Trajet supprimé.")}};
+$("payments").onclick=e=>{let b=e.target.closest("[data-del-payment]");if(b&&confirm("Supprimer ce paiement ?")){state.payments=state.payments.filter(p=>p.id!==b.dataset.delPayment);persist();toast("Paiement supprimé.")}};
+$("exportBtn").onclick=()=>download(JSON.stringify(state,null,2),`covoiturage-clair-${today()}.json`,"application/json");
+function download(data,name,type){let u=URL.createObjectURL(new Blob([data],{type})),a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+$("importBtn").onclick=()=>$("importFile").click();$("importFile").onchange=async e=>{try{let s=JSON.parse(await e.target.files[0].text());if(!Array.isArray(s.trips)||!Array.isArray(s.payments))throw 0;if(confirm("Remplacer les données de cet appareil ?")){state=normalize(s);persist();toast("Sauvegarde importée.")}}catch(_){toast("Fichier invalide.")}e.target.value=""};
+$("clearBtn").onclick=()=>{if(confirm("Effacer toutes les données locales ?")){state=fresh();persist();toast("Données locales effacées.")}};
+function ghConfig(){let owner=$("ghOwner").value.trim(),repo=$("ghRepo").value.trim(),branch=$("ghBranch").value.trim()||"main",path=$("ghPath").value.trim()||"data.json",password=$("ghPassword").value,token=$("ghToken").value;if(!owner||!repo||!password)return toast("Renseigne propriétaire, dépôt et mot de passe."),null;return{owner,repo,branch,path,password,token}}
+const b64=b=>{let s="";new Uint8Array(b).forEach(x=>s+=String.fromCharCode(x));return btoa(s)},unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function derive(password,salt,iterations){let km=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function encryptState(password){let salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iterations=600000,key=await derive(password,salt,iterations),plain=new TextEncoder().encode(JSON.stringify(state)),cipher=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,plain);return {format:"covoiturage-encrypted-v1",algorithm:"AES-256-GCM",kdf:"PBKDF2-SHA-256",iterations,salt:b64(salt),iv:b64(iv),ciphertext:b64(cipher),updatedAt:new Date().toISOString()}}
+async function decryptEnvelope(obj,password){if(obj.format!=="covoiturage-encrypted-v1")throw Error("Format de fichier chiffré non reconnu.");let key=await derive(password,unb64(obj.salt),obj.iterations),plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(obj.iv)},key,unb64(obj.ciphertext));let s=JSON.parse(new TextDecoder().decode(plain));if(!Array.isArray(s.trips)||!Array.isArray(s.payments))throw Error("Données invalides.");return normalize(s)}
+async function api(method,c,body){let url=`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/contents/${c.path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(c.branch)}`;let headers={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};if(c.token)headers.Authorization="Bearer "+c.token;if(body)headers["Content-Type"]="application/json";let r=await fetch(url,{method,headers,body:body?JSON.stringify(body):undefined});let j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||`Erreur GitHub ${r.status}`);return j}
+$("loadCloud").onclick=async()=>{let c=ghConfig();if(!c)return;try{$("cloudStatus").textContent="Chargement…";let j=await api("GET",c);githubSha=j.sha;let envelope=JSON.parse(new TextDecoder().decode(unb64(j.content.replace(/\n/g,""))));let incoming=await decryptEnvelope(envelope,c.password);if(confirm("Remplacer les données locales par la version GitHub ?")){state=incoming;persist();$("cloudStatus").textContent="Données GitHub chargées et déchiffrées.";toast("Synchronisation téléchargée.")}}catch(e){$("cloudStatus").textContent="Échec du chargement : "+e.message;toast("Impossible de charger : "+e.message)}};
+$("saveCloud").onclick=async()=>{let c=ghConfig();if(!c)return;if(!c.token)return toast("Ajoute un token GitHub pour autoriser l'écriture.");try{$("cloudStatus").textContent="Chiffrement et sauvegarde…";let envelope=await encryptState(c.password),content=btoa(unescape(encodeURIComponent(JSON.stringify(envelope,null,2))));let existing;try{existing=await api("GET",c);githubSha=existing.sha}catch(e){if(!String(e.message).includes("Not Found"))throw e}
+let body={message:"Mise à jour des données de covoiturage chiffrées",content,branch:c.branch};if(githubSha)body.sha=githubSha;let result=await api("PUT",c,body);githubSha=result.content?.sha||null;$("cloudStatus").textContent="Sauvegarde GitHub terminée : data.json contient uniquement le contenu chiffré.";toast("Données chiffrées sauvegardées sur GitHub.")}catch(e){$("cloudStatus").textContent="Échec de la sauvegarde : "+e.message;toast("Erreur GitHub : "+e.message)}};
+render();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
