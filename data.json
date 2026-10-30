@@ -11,7 +11,7 @@
     },
     {
       "id": "terrence",
-      "name": "Terrence",
+      "name": "Terence",
       "detail": "",
       "active": true
     },
@@ -31,5 +31,5 @@
     }
   ],
   "payments": [],
-  "updatedAt": "2026-10-30T09:39:04.824Z"
+  "updatedAt": "2026-10-30T09:39:26.840Z"
 }
