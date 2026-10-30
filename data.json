@@ -1,10 +1,35 @@
 {
-  "format": "covoiturage-encrypted-v1",
-  "algorithm": "AES-256-GCM",
-  "kdf": "PBKDF2-SHA-256",
-  "iterations": 600000,
-  "salt": "5wUcLyB5XT/9EesWneElkQ==",
-  "iv": "7O89S82C8Op3IU+4",
-  "ciphertext": "ntfApldjapa/+FDs97j4KrV2Cr3NJqyqAJfH4rypZnl+7+UVTvlQh7oDndeFR7tXO2dAMenK//I9WC2SaySQ+6Pu7rwa0KsBGqCQwfzupXBPzvrCaFmHYeX0Wb9ppxmnj8gnyMPGK8yPKHpzWH4tuD/D4uX9P9LX9TMFk5NmG6oe7gunVSLzlSyL/PJlNBItAqbcitzDj/DaglZH3CIe6NCDbE1QQJ4oVEZK3AAtaKxQ5s8CnX3ksTLGHZZJqDtikZuBwKGcXs7geAhUfGPJ9TUm2Ll92YMo592PE6nj73cy2Z+/2U4ojMxCyQA/0yIYYcrQ3DQUg0LZAdPF9V5n451RUPKw+v00jNUjL1c6gUkoXc8=",
-  "updatedAt": "2026-10-30T09:24:10.931Z"
+  "version": 1,
+  "monthlyBase": 40,
+  "currency": "CHF",
+  "cars": [
+    {
+      "id": "mine",
+      "name": "Ma voiture",
+      "detail": "",
+      "active": true
+    },
+    {
+      "id": "terrence",
+      "name": "Terrence",
+      "detail": "",
+      "active": true
+    },
+    {
+      "id": "laura",
+      "name": "Laura",
+      "detail": "",
+      "active": true
+    }
+  ],
+  "trips": [
+    {
+      "id": "85728b2c-5bcf-4a00-995a-2b2e6120a997",
+      "date": "2026-10-29",
+      "note": "",
+      "carId": "mine"
+    }
+  ],
+  "payments": [],
+  "updatedAt": "2026-10-30T09:38:15.488Z"
 }
