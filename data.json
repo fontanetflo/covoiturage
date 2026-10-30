@@ -17,9 +17,9 @@
     },
     {
       "id": "laura",
-      "name": "Laura",
+      "name": "-",
       "detail": "",
-      "active": true
+      "active": false
     }
   ],
   "trips": [
@@ -31,5 +31,5 @@
     }
   ],
   "payments": [],
-  "updatedAt": "2026-10-30T09:41:28.602Z"
+  "updatedAt": "2026-10-30T09:41:49.682Z"
 }
