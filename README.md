@@ -1,54 +1,29 @@
-# 🚗 Mon covoiturage
+# Mon covoiturage — V3
 
-Application web personnelle permettant de suivre les journées de covoiturage, les véhicules utilisés, les participations financières et les règlements mensuels.
+Application personnelle de suivi des journées de covoiturage, véhicules et règlements.
 
 ## Fonctionnalités
+- Trajets par date et véhicule (Ma voiture, Terrence, Laura).
+- Historique filtrable par voiture et statistiques.
+- Participation mensuelle modifiable, calcul au prorata des jours du lundi au vendredi.
+- Paiements partiels ou complets et solde restant.
+- PIN à 4 chiffres pour verrouiller l'interface sur cet appareil.
+- Chargement GitHub au démarrage et synchronisation automatique après les modifications.
+- Affichage de la date et de l'heure de la dernière synchronisation réussie.
+- Export/import JSON local.
 
-* Enregistrement des journées de covoiturage.
-* Sélection du véhicule utilisé : Ma voiture, Terrence ou Laura.
-* Ajout, modification et désactivation des véhicules.
-* Historique des trajets filtrable par véhicule.
-* Statistiques d'utilisation par voiture.
-* Calcul automatique de la participation mensuelle au prorata des jours ouvrés.
-* Gestion des paiements complets et partiels.
-* Suivi du solde restant à payer.
-* Montant mensuel de référence modifiable dans les paramètres.
-* Export et import de sauvegardes JSON.
-* Synchronisation manuelle avec GitHub.
-* Chiffrement des données avec AES-256-GCM.
+## Installation GitHub Pages
+Remplacer `index.html` dans le dépôt, puis vérifier Settings → Pages : branche `main`, dossier `/ (root)`.
 
-## Calcul de la participation
+## Connexion GitHub
+Dans Paramètres de l'application, renseigner le propriétaire, le dépôt, `main`, `data.json` et le token GitHub Fine-grained. Le token doit être limité à ce dépôt avec Contents: Read and write. Cliquer sur « Enregistrer la connexion ».
 
-Le montant mensuel de référence est de **40 CHF** par défaut.
+Le token est conservé dans le stockage local du navigateur afin de ne pas être ressaisi à chaque ouverture. Il peut être effacé depuis les paramètres. Le PIN est également propre à cet appareil.
 
-Le calcul est effectué selon la formule :
-
-`Participation journalière = Montant mensuel / Nombre de jours ouvrés du mois`
-
-Les jours ouvrés correspondent aux jours du lundi au vendredi. Les jours fériés ne sont pas déduits.
-
-Chaque journée enregistrée correspond à un aller-retour.
-
-## Synchronisation et sécurité
-
-Les données sont stockées localement dans le navigateur et peuvent être synchronisées manuellement avec GitHub.
-
-Le fichier `data.json` contient uniquement les données chiffrées.
-
-Le chiffrement repose sur :
-
-* AES-256-GCM pour le chiffrement des données.
-* PBKDF2 avec SHA-256 pour dériver la clé à partir du mot de passe.
-* Un sel et un vecteur d'initialisation aléatoires.
-
-La synchronisation nécessite un token GitHub disposant des droits de lecture et d'écriture sur le contenu du dépôt.
-
-**Important :**
-
-* Le token GitHub n'est pas intégré au code source.
-* Le token est conservé uniquement en mémoire pendant la session.
-* Le mot de passe de chiffrement n'est pas enregistré.
-* La perte du mot de passe rend les données chiffrées irrécupérables.
-* Le chiffrement protège la confidentialité des données, mais pas contre la suppression ou le remplacement du fichier sur GitHub en cas de compromission du token.
-
-## Installation
+## À savoir
+- `data.json` est stocké en clair dans le dépôt public : toute personne connaissant le dépôt peut le lire.
+- Le PIN ne protège que l'ouverture de l'interface sur cet appareil. Il ne constitue pas une protection des données du dépôt.
+- Le token conservé dans le navigateur est accessible au code JavaScript exécuté sur le même site. Ne pas utiliser cette approche si le dépôt contient des données sensibles.
+- La synchronisation automatique fonctionne lorsque l'application est ouverte et que l'appareil est connecté à Internet.
+- Une sauvegarde locale exportée est recommandée périodiquement.
+- Les anciens trajets de la V2 sont repris localement ; ceux sans véhicule identifié sont affectés à « Ma voiture ».

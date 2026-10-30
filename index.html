@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#14231f"><title>Mon covoiturage — V2</title>
+<meta name="theme-color" content="#14231f"><title>Mon covoiturage — V3</title>
 <style>
 :root{--ink:#18231f;--muted:#66736d;--line:#e0e7e2;--paper:#f5f7f5;--green:#246b50;--green2:#e5f2ea;--red:#a83e37;--amber:#8b6418}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -58,38 +58,34 @@ hr{border:0;border-top:1px solid var(--line);margin:16px 0}
 <div class="grid" style="margin-top:12px"><div class="field"><label for="monthlyBase">Participation mensuelle</label><input id="monthlyBase" type="number" min="0" step=".01"></div><div class="field"><label for="currency">Devise</label><select id="currency"><option>CHF</option><option>EUR</option></select></div></div><div class="actions"><button class="primary" id="saveSettings">Enregistrer les paramètres</button></div></div>
 <div class="panel"><div class="head"><div><h2>Véhicules</h2><div class="sub">Renomme, ajoute ou désactive les véhicules disponibles.</div></div></div>
 <div id="cars" class="list"></div><hr><div class="grid"><div class="field"><label for="newCar">Nom du véhicule / conducteur</label><input id="newCar" placeholder="Ex. Laura"></div><div class="field"><label for="newCarDetail">Précision (facultatif)</label><input id="newCarDetail" placeholder="Ex. BMW Série 3"></div></div><div class="actions"><button class="secondary" id="addCar">Ajouter un véhicule</button></div></div>
-<div class="panel"><h2>Synchronisation GitHub chiffrée</h2>
-<div class="note">Le fichier data.json du dépôt ne contiendra que des données chiffrées. Le mot de passe ne quitte pas ton navigateur. Le token GitHub est gardé uniquement en mémoire tant que cette page reste ouverte.</div>
-<div class="grid" style="margin-top:12px">
+<div class="panel"><div class="head"><div><h2>Synchronisation automatique</h2><div class="sub" id="cloudStatus">Connexion à configurer</div></div><span class="pill due" id="syncBadge">Non configuré</span></div>
+<div class="grid">
 <div class="field"><label for="ghOwner">Propriétaire GitHub</label><input id="ghOwner" placeholder="ton-pseudo"></div>
 <div class="field"><label for="ghRepo">Nom du dépôt</label><input id="ghRepo" placeholder="covoiturage"></div>
 <div class="field"><label for="ghBranch">Branche</label><input id="ghBranch" value="main"></div>
 <div class="field"><label for="ghPath">Chemin du fichier</label><input id="ghPath" value="data.json"></div>
-<div class="field" style="grid-column:1/-1"><label for="ghPassword">Mot de passe de chiffrement</label><input id="ghPassword" type="password" autocomplete="new-password" placeholder="Mot de passe robuste"></div>
-<div class="field" style="grid-column:1/-1"><label for="ghToken">Token GitHub (fine-grained)</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div>
-</div>
-<div class="actions"><button class="secondary" id="loadCloud">Charger depuis GitHub</button><button class="primary" id="saveCloud">Chiffrer et sauvegarder sur GitHub</button></div>
-<div class="note" id="cloudStatus">Configuration non enregistrée sur le serveur. Les champs de connexion ne sont pas sauvegardés localement.</div>
-<hr><h2>Sauvegarde locale</h2><div class="actions"><button class="secondary" id="exportBtn">Exporter une sauvegarde JSON en clair</button><button class="plain" id="importBtn">Importer une sauvegarde JSON</button><input id="importFile" type="file" accept=".json,application/json" hidden></div>
-<div class="note">Conserve l'export local dans un endroit sûr. Le fichier exporté est en clair, contrairement au data.json GitHub. En cas de perte du mot de passe de chiffrement, le fichier GitHub ne pourra plus être déchiffré.</div>
-<div class="actions"><button class="danger" id="clearBtn">Effacer les données de cet appareil</button></div>
-</div></section>
-</main><footer class="wrap note" style="text-align:center;padding-bottom:24px">Application personnelle · synchronisation GitHub à la demande</footer>
-<div id="toast" class="toast" hidden></div>
+<div class="field" style="grid-column:1/-1"><label for="ghToken">Token GitHub</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div></div>
+<div class="actions"><button class="primary" id="saveGhSettings">Enregistrer la connexion</button><button class="plain" id="forgetToken">Effacer le token</button><button class="secondary" id="syncNow">Synchroniser maintenant</button></div>
+<div class="note">Le token est conservé dans ce navigateur pour ne pas avoir à le ressaisir. Le fichier data.json sera en clair et visible dans ton dépôt public. Le PIN sert uniquement à verrouiller l'interface, pas à protéger les données.</div>
+<div class="note"><b>Dernière synchronisation réussie :</b> <span id="lastSync">Jamais</span></div>
+<hr><h2>Code PIN</h2><div class="grid" style="margin-top:10px"><div class="field"><label for="newPin">Nouveau PIN (4 chiffres)</label><input id="newPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••"></div><div class="field"><label for="confirmPin">Confirmation</label><input id="confirmPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••"></div></div><div class="actions"><button class="secondary" id="changePin">Modifier le PIN</button></div>
+<hr><h2>Sauvegarde locale</h2><div class="actions"><button class="secondary" id="exportBtn">Exporter une sauvegarde JSON</button><button class="plain" id="importBtn">Importer une sauvegarde JSON</button><input id="importFile" type="file" accept=".json,application/json" hidden></div><div class="note">L'export est en clair. Conserve-le dans un emplacement sûr.</div><div class="actions"><button class="danger" id="clearBtn">Effacer les données de cet appareil</button></div></div></section>
+</main><footer class="wrap note" style="text-align:center;padding-bottom:24px">Application personnelle · synchronisation GitHub automatique</footer>
+<div id="toast" class="toast" hidden></div><div id="pinOverlay" style="position:fixed;inset:0;background:#14231f;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px"><div style="background:white;border-radius:20px;padding:24px;width:min(360px,100%);text-align:center"><div style="color:#246b50;font-weight:800">MON COVOITURAGE</div><h2 id="pinTitle" style="margin:12px 0">Déverrouiller</h2><p class="sub" id="pinHelp">Saisis ton PIN à 4 chiffres.</p><input id="pinEntry" type="password" inputmode="numeric" maxlength="4" placeholder="••••" style="text-align:center;font-size:1.7rem;letter-spacing:.5em;margin:12px 0"><button class="primary" id="pinSubmit" style="width:100%">Valider</button><div class="note" id="pinError"></div></div></div>
 <script>
 (()=> {
-const KEY="covoiturage-tracker-v2", $=id=>document.getElementById(id);
+const KEY="covoiturage-tracker-v3", $=id=>document.getElementById(id);
 const today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
 const monthOf=d=>d.slice(0,7), money=n=>new Intl.NumberFormat("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const uid=()=>crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random());
 const fresh=()=>({version:2,monthlyBase:40,currency:"CHF",cars:[{id:"mine",name:"Ma voiture",detail:"",active:true},{id:"terrence",name:"Terrence",detail:"",active:true},{id:"laura",name:"Laura",detail:"",active:true}],trips:[],payments:[]});
 function normalize(s){let d={...fresh(),...s};d.cars=Array.isArray(d.cars)&&d.cars.length?d.cars:fresh().cars;d.trips=(d.trips||[]).map(t=>({...t,carId:t.carId||"mine"}));return d}
-function load(){try{let v=JSON.parse(localStorage.getItem(KEY));if(v&&Array.isArray(v.trips))return normalize(v);
+function load(){try{let v=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem("covoiturage-tracker-v2"));if(v&&Array.isArray(v.trips))return normalize(v);
 let old=JSON.parse(localStorage.getItem("covoiturage-tracker-v1"));if(old&&Array.isArray(old.trips)){let n=normalize(old);n.trips=n.trips.map(t=>({...t,carId:"mine"}));return n}}catch(e){}return fresh()}
-let state=load(), githubSha=null, tokenInMemory="";
+let state=load();
 function toast(m){let e=$("toast");e.textContent=m;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3000)}
-function persist(){localStorage.setItem(KEY,JSON.stringify(state));render()}
+function persist(){state.updatedAt=new Date().toISOString();saveLocal()}
 function weekdays(m){let [y,mo]=m.split("-").map(Number),n=0;for(let d=1;d<=new Date(y,mo,0).getDate();d++){let w=new Date(y,mo-1,d).getDay();if(w!==0&&w!==6)n++}return n}
 function cost(date){let n=weekdays(monthOf(date));return n?Number(state.monthlyBase||0)/n:0}
 function md(m){let trips=state.trips.filter(t=>monthOf(t.date)===m),payments=state.payments.filter(p=>p.month===m),due=trips.reduce((a,t)=>a+cost(t.date),0),paid=payments.reduce((a,p)=>a+Number(p.amount||0),0);return{trips,payments,due,paid,balance:Math.max(0,due-paid)}}
@@ -131,14 +127,33 @@ function download(data,name,type){let u=URL.createObjectURL(new Blob([data],{typ
 $("importBtn").onclick=()=>$("importFile").click();$("importFile").onchange=async e=>{try{let s=JSON.parse(await e.target.files[0].text());if(!Array.isArray(s.trips)||!Array.isArray(s.payments))throw 0;if(confirm("Remplacer les données de cet appareil ?")){state=normalize(s);persist();toast("Sauvegarde importée.")}}catch(_){toast("Fichier invalide.")}e.target.value=""};
 $("clearBtn").onclick=()=>{if(confirm("Effacer toutes les données locales ?")){state=fresh();persist();toast("Données locales effacées.")}};
 function ghConfig(){let owner=$("ghOwner").value.trim(),repo=$("ghRepo").value.trim(),branch=$("ghBranch").value.trim()||"main",path=$("ghPath").value.trim()||"data.json",password=$("ghPassword").value,token=$("ghToken").value;if(!owner||!repo||!password)return toast("Renseigne propriétaire, dépôt et mot de passe."),null;return{owner,repo,branch,path,password,token}}
-const b64=b=>{let s="";new Uint8Array(b).forEach(x=>s+=String.fromCharCode(x));return btoa(s)},unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-async function derive(password,salt,iterations){let km=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
-async function encryptState(password){let salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iterations=600000,key=await derive(password,salt,iterations),plain=new TextEncoder().encode(JSON.stringify(state)),cipher=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,plain);return {format:"covoiturage-encrypted-v1",algorithm:"AES-256-GCM",kdf:"PBKDF2-SHA-256",iterations,salt:b64(salt),iv:b64(iv),ciphertext:b64(cipher),updatedAt:new Date().toISOString()}}
-async function decryptEnvelope(obj,password){if(obj.format!=="covoiturage-encrypted-v1")throw Error("Format de fichier chiffré non reconnu.");let key=await derive(password,unb64(obj.salt),obj.iterations),plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(obj.iv)},key,unb64(obj.ciphertext));let s=JSON.parse(new TextDecoder().decode(plain));if(!Array.isArray(s.trips)||!Array.isArray(s.payments))throw Error("Données invalides.");return normalize(s)}
-async function api(method,c,body){let url=`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/contents/${c.path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(c.branch)}`;let headers={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};if(c.token)headers.Authorization="Bearer "+c.token;if(body)headers["Content-Type"]="application/json";let r=await fetch(url,{method,headers,body:body?JSON.stringify(body):undefined});let j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||`Erreur GitHub ${r.status}`);return j}
-$("loadCloud").onclick=async()=>{let c=ghConfig();if(!c)return;try{$("cloudStatus").textContent="Chargement…";let j=await api("GET",c);githubSha=j.sha;let envelope=JSON.parse(new TextDecoder().decode(unb64(j.content.replace(/\n/g,""))));let incoming=await decryptEnvelope(envelope,c.password);if(confirm("Remplacer les données locales par la version GitHub ?")){state=incoming;persist();$("cloudStatus").textContent="Données GitHub chargées et déchiffrées.";toast("Synchronisation téléchargée.")}}catch(e){$("cloudStatus").textContent="Échec du chargement : "+e.message;toast("Impossible de charger : "+e.message)}};
-$("saveCloud").onclick=async()=>{let c=ghConfig();if(!c)return;if(!c.token)return toast("Ajoute un token GitHub pour autoriser l'écriture.");try{$("cloudStatus").textContent="Chiffrement et sauvegarde…";let envelope=await encryptState(c.password),content=btoa(unescape(encodeURIComponent(JSON.stringify(envelope,null,2))));let existing;try{existing=await api("GET",c);githubSha=existing.sha}catch(e){if(!String(e.message).includes("Not Found"))throw e}
-let body={message:"Mise à jour des données de covoiturage chiffrées",content,branch:c.branch};if(githubSha)body.sha=githubSha;let result=await api("PUT",c,body);githubSha=result.content?.sha||null;$("cloudStatus").textContent="Sauvegarde GitHub terminée : data.json contient uniquement le contenu chiffré.";toast("Données chiffrées sauvegardées sur GitHub.")}catch(e){$("cloudStatus").textContent="Échec de la sauvegarde : "+e.message;toast("Erreur GitHub : "+e.message)}};
-render();
+
+const CFG="covoiturage-gh-v3", AUTH="covoiturage-pin-v3";
+let cfg={owner:"",repo:"",branch:"main",path:"data.json",token:""}, githubSha=null, syncTimer=null, unlocked=false, syncing=false;
+try{cfg={...cfg,...JSON.parse(localStorage.getItem(CFG)||"{}")}}catch(e){}
+function configFields(){ $("ghOwner").value=cfg.owner;$("ghRepo").value=cfg.repo;$("ghBranch").value=cfg.branch;$("ghPath").value=cfg.path;$("ghToken").value=cfg.token; }
+function saveConfig(){cfg={owner:$("ghOwner").value.trim(),repo:$("ghRepo").value.trim(),branch:$("ghBranch").value.trim()||"main",path:$("ghPath").value.trim()||"data.json",token:$("ghToken").value.trim()};localStorage.setItem(CFG,JSON.stringify(cfg));}
+function ready(write=true){return !!(cfg.owner&&cfg.repo&&cfg.path&&(!write||cfg.token))}
+function syncLabel(text,badge="En attente",kind="due"){$("cloudStatus").textContent=text;$("syncBadge").textContent=badge;$("syncBadge").className="pill "+(kind==="ok"?"paid":"due")}
+function dateLabel(d){return d?new Date(d).toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"short"}):"Jamais"}
+let lastSync=localStorage.getItem("covoiturage-last-sync-v3")||"";
+$("lastSync").textContent=dateLabel(lastSync);
+async function gh(method,body){let url=`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`;let h={"Accept":"application/vnd.github+json","X-GitHub-Api-Version":"2022-11-28"};if(cfg.token)h.Authorization="Bearer "+cfg.token;if(body)h["Content-Type"]="application/json";let r=await fetch(url,{method,headers:h,body:body?JSON.stringify(body):undefined});let j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||"Erreur GitHub "+r.status);return j}
+function decode64(s){return decodeURIComponent(escape(atob(s.replace(/\n/g,""))))}
+async function pullCloud(silent=true){if(!ready(false))throw Error("Paramètres GitHub incomplets.");let j=await gh("GET");githubSha=j.sha;let remote=JSON.parse(decode64(j.content));if(!Array.isArray(remote.trips)||!Array.isArray(remote.payments))throw Error("Format data.json invalide.");state={...state,...remote};localStorage.setItem(KEY,JSON.stringify(state));render();lastSync=new Date().toISOString();localStorage.setItem("covoiturage-last-sync-v3",lastSync);$("lastSync").textContent=dateLabel(lastSync);syncLabel("Données récupérées depuis GitHub","Synchronisé","ok");if(!silent)toast("Données chargées depuis GitHub.")}
+async function pushCloud(){if(syncing||!ready(true))return;syncing=true;syncLabel("Enregistrement sur GitHub…","En cours");try{let ex;try{ex=await gh("GET");githubSha=ex.sha}catch(e){if(!String(e.message).toLowerCase().includes("not found"))throw e}let payload={...state,updatedAt:new Date().toISOString()};let content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));let body={message:"Mise à jour automatique du covoiturage",content,branch:cfg.branch};if(githubSha)body.sha=githubSha;let out=await gh("PUT",body);githubSha=out.content?.sha||null;state.updatedAt=payload.updatedAt;localStorage.setItem(KEY,JSON.stringify(state));lastSync=new Date().toISOString();localStorage.setItem("covoiturage-last-sync-v3",lastSync);$("lastSync").textContent=dateLabel(lastSync);syncLabel("Toutes les modifications sont enregistrées sur GitHub","Synchronisé","ok")}catch(e){syncLabel("Erreur de synchronisation : "+e.message,"Erreur","due");toast("Synchronisation impossible : "+e.message)}finally{syncing=false}}
+function scheduleSync(){if(!unlocked)return;if(!ready(true)){syncLabel("Données conservées localement · connexion GitHub à configurer","Local uniquement");return}syncLabel("Modification enregistrée · synchronisation dans quelques secondes","En attente");clearTimeout(syncTimer);syncTimer=setTimeout(pushCloud,1800)}
+function saveLocal(){localStorage.setItem(KEY,JSON.stringify(state));render();scheduleSync()}
+function pinHash(pin){return crypto.subtle.digest("SHA-256",new TextEncoder().encode("covoiturage-ui-pin:"+pin)).then(x=>[...new Uint8Array(x)].map(v=>v.toString(16).padStart(2,"0")).join(""))}
+async function unlock(){let stored=localStorage.getItem(AUTH),pin=$("pinEntry").value;if(!/^\d{4}$/.test(pin)){$("pinError").textContent="Le PIN doit contenir 4 chiffres.";return}let h=await pinHash(pin);if(stored&&stored!==h){$("pinError").textContent="PIN incorrect."; $("pinEntry").value="";return}if(!stored)localStorage.setItem(AUTH,h);unlocked=true;$("pinOverlay").style.display="none";configFields();if(ready(false)){syncLabel("Chargement des données…","Chargement");try{await pullCloud()}catch(e){syncLabel("GitHub indisponible : données locales conservées ("+e.message+")","Hors ligne")}}else syncLabel("Configure GitHub dans Paramètres","Non configuré")}
+$("pinTitle").textContent=localStorage.getItem(AUTH)?"Déverrouiller":"Créer ton PIN";
+$("pinHelp").textContent=localStorage.getItem(AUTH)?"Saisis ton PIN à 4 chiffres.":"Choisis un PIN à 4 chiffres pour cet appareil.";
+$("pinSubmit").textContent=localStorage.getItem(AUTH)?"Déverrouiller":"Créer le PIN";
+$("pinSubmit").onclick=unlock;$("pinEntry").onkeydown=e=>{if(e.key==="Enter")unlock()};
+$("saveGhSettings").onclick=()=>{saveConfig();syncLabel("Connexion enregistrée dans ce navigateur","Prêt","ok");toast("Connexion GitHub enregistrée.");if(ready(true))scheduleSync()};
+$("forgetToken").onclick=()=>{if(confirm("Effacer le token enregistré sur cet appareil ?")){cfg.token="";localStorage.setItem(CFG,JSON.stringify(cfg));$("ghToken").value="";syncLabel("Token effacé","Non configuré")}};
+$("syncNow").onclick=async()=>{saveConfig();if(!ready(true))return toast("Renseigne les paramètres et le token.");await pushCloud()};
+$("changePin").onclick=async()=>{let a=$("newPin").value,b=$("confirmPin").value;if(!/^\d{4}$/.test(a)||a!==b)return toast("Les deux PIN doivent contenir les mêmes 4 chiffres.");localStorage.setItem(AUTH,await pinHash(a));$("newPin").value=$("confirmPin").value="";toast("PIN modifié.")};
+render();configFields();
 })();
 </script></body></html>
