@@ -46,8 +46,14 @@
       "date": "2026-11-10",
       "carId": "mine",
       "note": ""
+    },
+    {
+      "id": "0aa017d8-fc05-4a4c-96b5-e1c65f13b996",
+      "date": "2026-11-05",
+      "carId": "mine",
+      "note": ""
     }
   ],
   "payments": [],
-  "updatedAt": "2026-11-10T17:08:10.292Z"
+  "updatedAt": "2026-11-10T17:11:06.066Z"
 }
