@@ -52,8 +52,14 @@
       "date": "2026-11-05",
       "carId": "mine",
       "note": ""
+    },
+    {
+      "id": "5a906047-9907-4a9f-b708-2684a8a1ecad",
+      "date": "2026-11-12",
+      "carId": "terrence",
+      "note": ""
     }
   ],
   "payments": [],
-  "updatedAt": "2026-11-10T17:12:19.163Z"
+  "updatedAt": "2026-11-12T06:21:53.589Z"
 }
